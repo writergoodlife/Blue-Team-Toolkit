@@ -1,0 +1,65 @@
+# Blue Team Toolkit - Git Ignore Configuration
+
+# Logs and Reports
+logs/*.log
+logs/**/*.log
+reports/*.txt
+reports/*.json
+reports/*.html
+backups/*
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# PID files
+*.pid
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Keep directory structure but ignore contents
+!logs/.gitkeep
+!reports/.gitkeep
+!backups/.gitkeep
