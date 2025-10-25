@@ -1,0 +1,35 @@
+INCIDENT REPORT - CEG25 Competition
+===================================
+
+Incident ID: INC-20251024-102417-9596
+Type: BRUTE_FORCE
+Severity: MEDIUM
+Status: PENDING
+Created: 2025-10-24 10:24:17
+
+DESCRIPTION:
+Multiple SSH login attempts from single IP
+
+SOURCE INFORMATION:
+- IP Address: 192.168.70.139
+- Target System: SCADA-Server-05
+
+INDICATORS:
+Simulated attack indicators
+
+INITIAL ASSESSMENT:
+Brute force attack on authentication systems. Risk of account compromise.
+
+COMPETITION IMPACT:
+MEDIUM: Response within SLA window. Moderate scoring impact. Standard procedures apply.
+
+RESPONSE TIMELINE:
+- Detection: 2025-10-24 10:24:17
+- Assessment: 2025-10-24 10:24:17
+- Response: PENDING
+- Containment: PENDING
+- Recovery: PENDING
+
+ASSIGNED TEAM: NETWORK_DEFENSE + FORENSICS_TEAM
+
+PLAYBOOK: Brute_Force_Attack.yml

@@ -1,0 +1,35 @@
+INCIDENT REPORT - CEG25 Competition
+===================================
+
+Incident ID: INC-20251024-102415-2083
+Type: SCADA_ATTACK
+Severity: HIGH
+Status: PENDING
+Created: 2025-10-24 10:24:15
+
+DESCRIPTION:
+Unauthorized Modbus write command detected on PLC
+
+SOURCE INFORMATION:
+- IP Address: 192.168.98.193
+- Target System: SCADA-Server-04
+
+INDICATORS:
+Simulated attack indicators
+
+INITIAL ASSESSMENT:
+Potential compromise of industrial control systems. Risk of physical damage to energy infrastructure.
+
+COMPETITION IMPACT:
+HIGH: Rapid response needed. Significant scoring impact. Requires coordinated team response.
+
+RESPONSE TIMELINE:
+- Detection: 2025-10-24 10:24:15
+- Assessment: 2025-10-24 10:24:15
+- Response: PENDING
+- Containment: PENDING
+- Recovery: PENDING
+
+ASSIGNED TEAM: SCADA_SPECIALISTS + NETWORK_DEFENSE
+
+PLAYBOOK: SCADA_Compromise_Response.yml

@@ -1,0 +1,35 @@
+INCIDENT REPORT - CEG25 Competition
+===================================
+
+Incident ID: INC-20251024-102418-3598
+Type: NETWORK_INTRUSION
+Severity: HIGH
+Status: PENDING
+Created: 2025-10-24 10:24:18
+
+DESCRIPTION:
+Suspicious lateral movement detected
+
+SOURCE INFORMATION:
+- IP Address: 192.168.169.177
+- Target System: SCADA-Server-04
+
+INDICATORS:
+Simulated attack indicators
+
+INITIAL ASSESSMENT:
+Unauthorized network access detected. Potential for lateral movement and data compromise.
+
+COMPETITION IMPACT:
+HIGH: Rapid response needed. Significant scoring impact. Requires coordinated team response.
+
+RESPONSE TIMELINE:
+- Detection: 2025-10-24 10:24:18
+- Assessment: 2025-10-24 10:24:18
+- Response: PENDING
+- Containment: PENDING
+- Recovery: PENDING
+
+ASSIGNED TEAM: NETWORK_DEFENSE + FORENSICS_TEAM
+
+PLAYBOOK: Network_Intrusion_Response.yml

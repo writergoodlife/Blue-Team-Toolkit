@@ -1,0 +1,35 @@
+INCIDENT REPORT - CEG25 Competition
+===================================
+
+Incident ID: INC-20251024-102419-7306
+Type: MALWARE_INFECTION
+Severity: HIGH
+Status: PENDING
+Created: 2025-10-24 10:24:19
+
+DESCRIPTION:
+Ransomware detected on Windows workstation
+
+SOURCE INFORMATION:
+- IP Address: 192.168.141.25
+- Target System: SCADA-Server-02
+
+INDICATORS:
+Simulated attack indicators
+
+INITIAL ASSESSMENT:
+Malicious software detected. Potential for data theft, system disruption, or backdoor access.
+
+COMPETITION IMPACT:
+HIGH: Rapid response needed. Significant scoring impact. Requires coordinated team response.
+
+RESPONSE TIMELINE:
+- Detection: 2025-10-24 10:24:19
+- Assessment: 2025-10-24 10:24:19
+- Response: PENDING
+- Containment: PENDING
+- Recovery: PENDING
+
+ASSIGNED TEAM: FORENSICS_TEAM + INCIDENT_COORDINATOR
+
+PLAYBOOK: Malware_Response.yml

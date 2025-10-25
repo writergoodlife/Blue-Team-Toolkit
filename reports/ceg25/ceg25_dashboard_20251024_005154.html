@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CEG25 Competition Dashboard - Blue Team Defense</title>
+    <meta http-equiv="refresh" content="30">
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .header { 
+            background: rgba(0, 0, 0, 0.8); 
+            padding: 20px; 
+            text-align: center; 
+            backdrop-filter: blur(10px);
+        }
+        .dashboard-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 20px; 
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .widget { 
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(10px);
+            border-radius: 15px; 
+            padding: 20px; 
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+        .widget:hover { transform: translateY(-5px); }
+        .widget-title { 
+            font-size: 1.2em; 
+            font-weight: bold; 
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .widget-title::before { 
+            content: ''; 
+            width: 4px; 
+            height: 20px; 
+            background: #00ff88; 
+            margin-right: 10px; 
+            border-radius: 2px;
+        }
+        .stat-large { 
+            font-size: 2.5em; 
+            font-weight: bold; 
+            text-align: center; 
+            color: #00ff88;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+        .status-good { color: #00ff88; }
+        .status-warning { color: #ffaa00; }
+        .status-critical { color: #ff4444; }
+        .phase-indicator { 
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        .energy-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 10px; 
+        }
+        .energy-system { 
+            background: rgba(0, 0, 0, 0.3); 
+            padding: 10px; 
+            border-radius: 8px; 
+            text-align: center;
+        }
+        .system-status { 
+            width: 12px; 
+            height: 12px; 
+            border-radius: 50%; 
+            display: inline-block; 
+            margin-right: 8px;
+        }
+        .status-active { background: #00ff88; box-shadow: 0 0 10px #00ff88; }
+        .status-inactive { background: #ff4444; box-shadow: 0 0 10px #ff4444; }
+        .log-feed { 
+            background: rgba(0, 0, 0, 0.7); 
+            padding: 15px; 
+            border-radius: 10px; 
+            font-family: 'Courier New', monospace; 
+            font-size: 0.9em;
+            height: 200px;
+            overflow-y: auto;
+        }
+        .scroll-text { 
+            animation: scroll 20s linear infinite; 
+        }
+        @keyframes scroll { 
+            from { transform: translateY(100%); } 
+            to { transform: translateY(-100%); } 
+        }
+        .competition-banner {
+            background: linear-gradient(45deg, #ff0000, #ff6600);
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="competition-banner">
+        🏆 CyberEXPERT Game 2025 (CEG25) - LIVE COMPETITION 🏆
+        <br>Energy Infrastructure Defense - Blue Team Operations Center
+    </div>
+
+    <div class="header">
+        <h1>🛡️ Blue Team Defense Dashboard</h1>
+        <div class="phase-indicator">Phase: DAY1 MORNING</div>
+        <p>Last Updated: Pre 24 Tet 2025 12:51:54.PD CEST | Competition Day: e premte</p>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="widget">
+            <div class="widget-title">🚨 Competition Status</div>
+            <div class="stat-large">ACTIVE</div>
+            <p>Energy infrastructure under Blue Team protection</p>
+            <p><strong>Uptime:</strong>  00:51:54 up  1:30,  1 user,  load average: 1,03, 1,15, 1,19</p>
+        </div>
+
+        <div class="widget">
+            <div class="widget-title">📊 Service Availability</div>
+            <div class="stat-large status-good">36</div>
+            <p>Critical services running</p>
+            <p><strong>Network:</strong> 10 active connections</p>
+        </div>
+
+        <div class="widget">
+            <div class="widget-title">⚡ Energy Infrastructure</div>
+            <div class="energy-grid">
+                <div class="energy-system">
+                    <span class="system-status status-active"></span>SCADA
+                </div>
+                <div class="energy-system">
+                    <span class="system-status status-active"></span>HMI
+                </div>
+                <div class="energy-system">
+                    <span class="system-status status-active"></span>EMS
+                </div>
+                <div class="energy-system">
+                    <span class="system-status status-active"></span>DMS
+                </div>
+            </div>
+        </div>
+
+        <div class="widget">
+            <div class="widget-title">🏭 Industrial Protocols</div>
+            <p><span class="status-good">●</span> Modbus TCP Monitoring</p>
+            <p><span class="status-good">●</span> DNP3 Surveillance</p>
+            <p><span class="status-good">●</span> IEC 61850 Protection</p>
+            <p><span class="status-good">●</span> EtherNet/IP Monitoring</p>
+        </div>
+
+        <div class="widget">
+            <div class="widget-title">🛡️ Defense Systems</div>
+            <p><span class="status-good">●</span> Network Monitoring: Active</p>
+            <p><span class="status-good">●</span> Vulnerability Scanning: Running</p>
+            <p><span class="status-good">●</span> Incident Response: Ready</p>
+            <p><span class="status-good">●</span> Automation: Enabled</p>
+        </div>
+
+        <div class="widget">
+            <div class="widget-title">📈 Scoring Metrics</div>
+            <div class="energy-grid">
+                <div class="energy-system">
+                    Service Uptime<br><strong class="status-good">40%</strong>
+                </div>
+                <div class="energy-system">
+                    Vuln Removal<br><strong class="status-good">35%</strong>
+                </div>
+                <div class="energy-system">
+                    Incident Response<br><strong class="status-good">15%</strong>
+                </div>
+                <div class="energy-system">
+                    Hardening<br><strong class="status-good">10%</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="widget" style="margin: 20px; max-width: calc(100% - 40px);">
+        <div class="widget-title">📜 Live Activity Feed</div>
+        <div class="log-feed">
+            <div>[2025-10-24 00:51:54] [CEG25] [day1_morning] Initializing CEG25 competition environment</div>
+            <div>[2025-10-24 00:51:54] [INFO] [day1_morning] Establishing security baseline for energy infrastructure</div>
+            <div>[2025-10-24 00:51:54] [INFO] [day1_morning] Creating comprehensive system snapshot</div>
+            <div>[2025-10-24 00:51:54] [SUCCESS] [day1_morning] System snapshot created: system_snapshot_day1_morning_20251024_005154.txt</div>
+            <div>[2025-10-24 00:51:54] [INFO] [day1_morning] Starting CEG25 competition monitoring systems</div>
+            <div>[2025-10-24 00:51:54] [SUCCESS] [day1_morning] Industrial protocol monitor activated</div>
+            <div>[2025-10-24 00:51:54] [SUCCESS] [day1_morning] Blue Team agent monitoring activated</div>
+            <div>[2025-10-24 00:51:54] [INFO] [day1_morning] Creating CEG25 competition dashboard</div>
+        </div>
+    </div>
+
+    <div class="header" style="margin-top: 20px;">
+        <p>🏆 CyberEXPERT Game 2025 | Warsaw, Poland | October 28-30, 2025</p>
+        <p>Blue Team Automation v2.0 - Protecting Critical Energy Infrastructure</p>
+    </div>
+
+    <script>
+        // Auto-scroll log feed
+        const logFeed = document.querySelector('.log-feed');
+        logFeed.scrollTop = logFeed.scrollHeight;
+    </script>
+</body>
+</html>

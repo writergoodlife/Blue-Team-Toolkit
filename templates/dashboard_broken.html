@@ -1,0 +1,416 @@
+
+        <div class="container mt-4">
+            <h2 class="mb-4">Blue Team Toolkit Dashboard</h2>
+            <ul class="nav nav-tabs" id="toolTabs" role="tablist">
+                {% for key, tool in tool_scripts.items() %}
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link {% if loop.first %}active{% endif %}" id="{{key}}-tab" data-bs-toggle="tab" data-bs-target="#{{key}}" type="button" role="tab" aria-controls="{{key}}" aria-selected="{% if loop.first %}true{% else %}false{% endif %}">{{tool['name']}}</button>
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="tab-content" id="toolTabsContent">
+                {% for key, tool in tool_scripts.items() %}
+                <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="{{key}}" role="tabpanel" aria-labelledby="{{key}}-tab">
+                    <div class="card mt-3">
+                        <div class="card-header">{{tool['name']}}</div>
+                        <div class="card-body">
+                            <button id="start-{{key}}" class="btn btn-success btn-sm me-2"><i class="fas fa-play"></i> Start</button>
+                            <button id="stop-{{key}}" class="btn btn-danger btn-sm me-2"><i class="fas fa-stop"></i> Stop</button>
+                            <span id="status-{{key}}" class="badge bg-secondary">Stopped</span>
+                            <div class="mt-3 mb-2">
+                                <div class="row text-center">
+                                    {% for metric, value in tool['metrics'].items() %}
+                                    <div class="col"><span id="metric-{{key}}-{{metric}}" class="metric-value">0</span><br><small>{{metric.replace('_',' ').title()}}</small></div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <h6>Live Log</h6>
+                                <pre id="log-{{key}}" style="background:#222;color:#0f0;height:150px;overflow-y:scroll;padding:8px;border-radius:6px;"></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEG25 Blue Team Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #1a1a1a; color: #ffffff; }
+        .card { background-color: #2d2d2d; border: 1px solid #444; margin-bottom: 20px; }
+        .card-header { background-color: #333; border-bottom: 1px solid #444; }
+        .status-healthy { color: #28a745; }
+        .status-warning { color: #ffc107; }
+        .status-danger { color: #dc3545; }
+        .status-unknown { color: #6c757d; }
+        .metric-value { font-size: 2rem; font-weight: bold; }
+        .competition-header { background: linear-gradient(45deg, #007bff, #28a745); color: white; }
+        .incident-critical { background-color: #dc3545; color: white; }
+        .incident-high { background-color: #fd7e14; color: white; }
+        .incident-medium { background-color: #ffc107; color: black; }
+        .incident-low { background-color: #28a745; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card competition-header">
+                    <div class="card-header">
+                        <h1 class="mb-0"><i class="fas fa-shield-alt"></i> CEG25 Blue Team Dashboard</h1>
+                        <p class="mb-0">Energy Infrastructure Defense | Warsaw, Poland | October 28-30, 2025</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Per-Tool Control Panel -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-cogs"></i> Blue Team Toolkit Controls</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Energy Vulnerability Scanner -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    <div class="card-header">Energy Vulnerability Scanner</div>
+                                    <div class="card-body">
+                                        <button id="startEnergyVuln" class="btn btn-success btn-sm me-2"><i class="fas fa-play"></i> Start</button>
+                                        <button id="stopEnergyVuln" class="btn btn-danger btn-sm me-2"><i class="fas fa-stop"></i> Stop</button>
+                                        <span id="statusEnergyVuln" class="badge bg-secondary">Stopped</span>
+                                        <div class="mt-3 mb-2">
+                                            <div class="row text-center">
+                                                <div class="col-4"><span id="energyActiveScans" class="metric-value">0</span><br><small>Active Scans</small></div>
+                                                <div class="col-4"><span id="energyCriticalVulns" class="metric-value text-danger">0</span><br><small>Critical Vulns</small></div>
+                                                <div class="col-4"><span id="energyHighVulns" class="metric-value text-warning">0</span><br><small>High Vulns</small></div>
+                                            </div>
+                                            <div class="row text-center mt-2">
+                                                <div class="col-12"><span id="energyMediumVulns" class="metric-value text-info">0</span><br><small>Medium Vulns</small></div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <h6>Live Log</h6>
+                                            <pre id="logEnergyVuln" style="background:#222;color:#0f0;height:150px;overflow-y:scroll;padding:8px;border-radius:6px;"></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Protocol Monitor -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    <div class="card-header">Industrial Protocol Monitor</div>
+                                    <div class="card-body">
+                                        <button id="startProtocolMonitor" class="btn btn-success btn-sm me-2"><i class="fas fa-play"></i> Start</button>
+                                        <button id="stopProtocolMonitor" class="btn btn-danger btn-sm me-2"><i class="fas fa-stop"></i> Stop</button>
+                                        <span id="statusProtocolMonitor" class="badge bg-secondary">Stopped</span>
+                                        <div class="mt-3 mb-2">
+                                            <div class="row text-center">
+                                                <div class="col-4"><span id="protocolConnections" class="metric-value">0</span><br><small>Connections</small></div>
+                                                <div class="col-4"><span id="protocolAlerts" class="metric-value text-danger">0</span><br><small>Alerts</small></div>
+                                                <div class="col-4"><span id="protocolProtocols" class="metric-value text-info">0</span><br><small>Protocols</small></div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <h6>Live Log</h6>
+                                            <pre id="logProtocolMonitor" style="background:#222;color:#0f0;height:150px;overflow-y:scroll;padding:8px;border-radius:6px;"></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- SCADA/ICS Security Scanner -->
+                            <div class="col-md-4 mb-3">
+                                <div class="card">
+                                    <div class="card-header">SCADA/ICS Security Scanner</div>
+                                    <div class="card-body">
+                                        <button id="startScadaScan" class="btn btn-success btn-sm me-2"><i class="fas fa-play"></i> Start</button>
+                                        <button id="stopScadaScan" class="btn btn-danger btn-sm me-2"><i class="fas fa-stop"></i> Stop</button>
+                                        <span id="statusScadaScan" class="badge bg-secondary">Stopped</span>
+                                        <div class="mt-3 mb-2">
+                                            <div class="row text-center">
+                                                <div class="col-4"><span id="scadaDevicesFound" class="metric-value">0</span><br><small>Devices Found</small></div>
+                                                <div class="col-4"><span id="scadaVulnsFound" class="metric-value text-danger">0</span><br><small>Vulns Found</small></div>
+                                                <div class="col-4"><span id="scadaProtocolsScanned" class="metric-value text-info">0</span><br><small>Protocols Scanned</small></div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <h6>Live Log</h6>
+                                            <pre id="logScadaScan" style="background:#222;color:#0f0;height:150px;overflow-y:scroll;padding:8px;border-radius:6px;"></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Overview -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-microchip fa-2x mb-2"></i>
+                        <h6>CPU Usage</h6>
+                        <div class="metric-value" id="cpuPercent">0%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-memory fa-2x mb-2"></i>
+                        <h6>Memory Usage</h6>
+                        <div class="metric-value" id="memoryPercent">0%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-hdd fa-2x mb-2"></i>
+                        <h6>Disk Usage</h6>
+                        <div class="metric-value" id="diskPercent">0%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-network-wired fa-2x mb-2"></i>
+                        <h6>Network Connections</h6>
+                        <div class="metric-value" id="networkConnections">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Competition Score -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-trophy"></i> Competition Score</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-2">
+                                <div class="metric-value text-primary" id="responseTime">0</div>
+                                <small>Response Time</small>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="metric-value text-success" id="containment">0</div>
+                                <small>Containment</small>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="metric-value text-info" id="recovery">0</div>
+                                <small>Recovery</small>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="metric-value text-warning" id="forensics">0</div>
+                                <small>Forensics</small>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="metric-value text-secondary" id="reporting">0</div>
+                                <small>Reporting</small>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="metric-value text-danger" id="totalScore">0</div>
+                                <small>Total Score</small>
+                            </div>
+                        </div>
+                        <div class="text-center mt-3">
+                            <h4 id="rank">Rank: N/A</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Services and Incidents -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-server"></i> Critical Services</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="servicesList">
+                            <!-- Services will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-exclamation-triangle"></i> Active Incidents</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="incidentsList">
+                            <!-- Incidents will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Network Traffic -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-network-wired"></i> Network Traffic Analysis</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-3">
+                                <div class="metric-value" id="packetsCaptured">0</div>
+                                <small>Packets Captured</small>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="metric-value text-danger" id="attacksDetected">0</div>
+                                <small>Attacks Detected</small>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="metric-value" id="protocolsCount">0</div>
+                                <small>Protocols Detected</small>
+                            </div>
+                            <div class="col-md-3">
+                                <small>Last Capture</small>
+                                <div id="lastCapture">Never</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Per-tool metrics DOM elements
+        const energyActiveScans = document.getElementById('energyActiveScans');
+        const energyCriticalVulns = document.getElementById('energyCriticalVulns');
+        const energyHighVulns = document.getElementById('energyHighVulns');
+        const energyMediumVulns = document.getElementById('energyMediumVulns');
+
+        const protocolConnections = document.getElementById('protocolConnections');
+        const protocolAlerts = document.getElementById('protocolAlerts');
+        const protocolProtocols = document.getElementById('protocolProtocols');
+
+        const scadaDevicesFound = document.getElementById('scadaDevicesFound');
+        const scadaVulnsFound = document.getElementById('scadaVulnsFound');
+        const scadaProtocolsScanned = document.getElementById('scadaProtocolsScanned');
+
+        // Poll metrics every 3 seconds
+        function updateMetrics(tool, domMap) {
+            fetch(`/api/tool/${tool}/metrics`).then(r => r.json()).then(data => {
+                const m = data.metrics || {};
+                Object.keys(domMap).forEach(k => {
+                    domMap[k].textContent = m[k] !== undefined ? m[k] : '0';
+                });
+            });
+        }
+        setInterval(() => {
+            updateMetrics('energy_vuln', {
+                'active_scans': energyActiveScans,
+                'critical_vulns': energyCriticalVulns,
+                'high_vulns': energyHighVulns,
+                'medium_vulns': energyMediumVulns
+            });
+            updateMetrics('protocol_monitor', {
+                'connections': protocolConnections,
+                'alerts': protocolAlerts,
+                'protocols': protocolProtocols
+            });
+            updateMetrics('scada_scan', {
+                'devices_found': scadaDevicesFound,
+                'vulns_found': scadaVulnsFound,
+                'protocols_scanned': scadaProtocolsScanned
+            });
+        }, 3000);
+        const socket = io();
+
+        // Per-tool DOM elements
+        const startEnergyVuln = document.getElementById('startEnergyVuln');
+        const stopEnergyVuln = document.getElementById('stopEnergyVuln');
+        const statusEnergyVuln = document.getElementById('statusEnergyVuln');
+        const logEnergyVuln = document.getElementById('logEnergyVuln');
+
+        const startProtocolMonitor = document.getElementById('startProtocolMonitor');
+        const stopProtocolMonitor = document.getElementById('stopProtocolMonitor');
+        const statusProtocolMonitor = document.getElementById('statusProtocolMonitor');
+        const logProtocolMonitor = document.getElementById('logProtocolMonitor');
+
+        const startScadaScan = document.getElementById('startScadaScan');
+        const stopScadaScan = document.getElementById('stopScadaScan');
+        const statusScadaScan = document.getElementById('statusScadaScan');
+        const logScadaScan = document.getElementById('logScadaScan');
+
+        // Per-tool button handlers
+        startEnergyVuln.onclick = () => { socket.emit('start_tool', {tool: 'energy_vuln'}); };
+        stopEnergyVuln.onclick = () => { socket.emit('stop_tool', {tool: 'energy_vuln'}); };
+        startProtocolMonitor.onclick = () => { socket.emit('start_tool', {tool: 'protocol_monitor'}); };
+        stopProtocolMonitor.onclick = () => { socket.emit('stop_tool', {tool: 'protocol_monitor'}); };
+        startScadaScan.onclick = () => { socket.emit('start_tool', {tool: 'scada_scan'}); };
+        stopScadaScan.onclick = () => { socket.emit('stop_tool', {tool: 'scada_scan'}); };
+
+        // Per-tool status updates
+        socket.on('tool_status', function(data) {
+            if (data.tool === 'energy_vuln') {
+                statusEnergyVuln.className = data.status === 'started' || data.status === 'running' ? 'badge bg-success' : 'badge bg-secondary';
+                statusEnergyVuln.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+            }
+            if (data.tool === 'protocol_monitor') {
+                statusProtocolMonitor.className = data.status === 'started' || data.status === 'running' ? 'badge bg-success' : 'badge bg-secondary';
+                statusProtocolMonitor.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+            }
+            if (data.tool === 'scada_scan') {
+                statusScadaScan.className = data.status === 'started' || data.status === 'running' ? 'badge bg-success' : 'badge bg-secondary';
+                statusScadaScan.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+            }
+        });
+
+        // Per-tool log streaming
+        function requestLogs(tool, logElem) {
+            socket.emit('tool_logs', {tool: tool});
+        }
+        socket.on('tool_logs', function(data) {
+            if (data.tool === 'energy_vuln') {
+                logEnergyVuln.textContent = (data.logs || []).join('');
+                logEnergyVuln.scrollTop = logEnergyVuln.scrollHeight;
+            }
+            if (data.tool === 'protocol_monitor') {
+                logProtocolMonitor.textContent = (data.logs || []).join('');
+                logProtocolMonitor.scrollTop = logProtocolMonitor.scrollHeight;
+            }
+            if (data.tool === 'scada_scan') {
+                logScadaScan.textContent = (data.logs || []).join('');
+                logScadaScan.scrollTop = logScadaScan.scrollHeight;
+            }
+        });
+
+        // Poll logs every 3 seconds
+        setInterval(() => {
+            requestLogs('energy_vuln', logEnergyVuln);
+            requestLogs('protocol_monitor', logProtocolMonitor);
+            requestLogs('scada_scan', logScadaScan);
+        }, 3000);
+
+        // ...existing system/score/incident/traffic JS code...
+    </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+Firewall Hardening Report - CEG25 Competition
+Generated: Pre 24 Tet 2025 10:07:52.PD CEST
+===========================================
+
+COMPETITION CONTEXT:
+- Event: CyberEXPERT Game 2025 (CEG25)
+- Phase: Energy Infrastructure Defense
+- Location: Warsaw, Poland
+- Date: October 28-30, 2025
+
+FIREWALL SYSTEM:
+- Type: ufw
+- Hardening Level: competition
+- Networks Protected: CONTROL,HMI,MANAGEMENT,SCADA,CORPORATE
+
+NETWORK SEGMENTATION:
+CONTROL Networks:
+  172.16.1.0/24
+HMI Networks:
+  172.16.3.0/24,10.200.0.0/24
+MANAGEMENT Networks:
+  10.0.0.0/8
+SCADA Networks:
+  172.16.2.0/24,10.50.0.0/24
+CORPORATE Networks:
+  10.10.0.0/24,192.168.0.0/24
+
+INDUSTRIAL PROTOCOLS PROTECTION:
+BACNET (Port 47808):
+  Allowed from: Authorized networks
+ETHERNET_IP (Port 44818):
+  Allowed from: Control networks only
+DNP3 (Port 20000):
+  Allowed from: SCADA networks only
+MODBUS_TCP (Port 502):
+  Allowed from: SCADA networks only
+OPC_UA (Port 4840):
+  Allowed from: Authorized networks
+IEC_61850_GOOSE (Port 102,61850):
+  Allowed from: Authorized networks
+SIEMENS_S7 (Port 102):
+  Allowed from: Control networks only
+PROFIBUS (Port 102):
+  Allowed from: Authorized networks
+PROFINET (Port 34962-34964):
+  Allowed from: Authorized networks
+MODBUS_RTU (Port 502):
+  Allowed from: Authorized networks
+IEC_61850_MMS (Port 102,61850):
+  Allowed from: Authorized networks
+
+FIREWALL STATUS:
+UFW Status:
+
+CEG25 COMPETITION COMPLIANCE:
+✓ Protected Infrastructure: 10.83.171.142 *.*.*.253 rt01.core.i-isp.eu rt02.core.i-isp.eu rt03.core.i-isp.eu
+✓ Protected Ports: 54321 8888
+✓ Network Segmentation: Implemented
+✓ Service Availability: Maintained
+
+COMPETITION RECOMMENDATIONS:
+1. Monitor firewall logs for Red Team activity
+2. Test service availability before competition phases
+3. Document firewall changes for incident response
+4. Regularly review and update network segmentation
+5. Backup firewall configurations before changes
+
+Backup Location: ../config/firewall_hardening/backup_20251024_100749

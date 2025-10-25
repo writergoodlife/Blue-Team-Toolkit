@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEG25 Blue Team Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #1a1a1a; color: #ffffff; }
+        .card { background-color: #2d2d2d; border: 1px solid #444; margin-bottom: 20px; }
+        .card-header { background-color: #333; border-bottom: 1px solid #444; }
+        .metric-value { font-size: 1.5rem; font-weight: bold; }
+        .metric-card { background-color: #1e1e1e; border-color: #555 !important; transition: all 0.3s; }
+        .metric-card:hover { background-color: #2a2a2a; transform: translateY(-2px); }
+        .metric-label { color: #aaa; font-size: 0.75rem; }
+        .competition-header { background: linear-gradient(45deg, #007bff, #28a745); color: white; }
+        .alert { margin-bottom: 10px; }
+        .alert h4 { margin-bottom: 5px; font-weight: bold; }
+        .nav-tabs .nav-link { color: #ccc; }
+        .nav-tabs .nav-link.active { background-color: #333; color: #fff; border-color: #444; }
+        .nav-tabs .nav-link:hover { background-color: #2a2a2a; color: #fff; }
+        #toolTabs { border-bottom: 2px solid #444; }
+        .badge { font-size: 0.8rem; }
+        pre { font-size: 0.8rem; line-height: 1.2; }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card competition-header">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h1 class="mb-0"><i class="fas fa-shield-alt"></i> CEG25 Blue Team Dashboard</h1>
+                                <p class="mb-0">Energy Infrastructure Defense | Warsaw, Poland | October 28-30, 2025</p>
+                            </div>
+                            <div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="simulationMode" checked>
+                                    <label class="form-check-label text-warning" for="simulationMode">
+                                        <i class="fas fa-vial"></i> Simulation Mode
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tool Control Tabs -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-cogs"></i> Blue Team Toolkit Controls</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="toolTabs" role="tablist">
+                            {% for key, tool in tool_scripts.items() %}
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link {% if loop.first %}active{% endif %}" id="{{key}}-tab" data-bs-toggle="tab" data-bs-target="#{{key}}" type="button" role="tab" aria-controls="{{key}}" aria-selected="{% if loop.first %}true{% else %}false{% endif %}">{{tool['name']}}</button>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        <div class="tab-content" id="toolTabsContent">
+                            {% for key, tool in tool_scripts.items() %}
+                            <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="{{key}}" role="tabpanel" aria-labelledby="{{key}}-tab">
+                                <div class="card mt-3">
+                                    <div class="card-header">{{tool['name']}}</div>
+                                    <div class="card-body">
+                                        <!-- Tool Configuration -->
+                                        <div class="mb-4">
+                                            <h6><i class="fas fa-cog"></i> Configuration</h6>
+                                            <form id="config-form-{{key}}" class="row g-3">
+                                                {% for param_key, param_config in tool['parameters'].items() %}
+                                                <div class="col-md-6">
+                                                    <label for="{{key}}-{{param_key}}" class="form-label">{{ param_config['label'] }}</label>
+                                                    {% if param_config['type'] == 'text' %}
+                                                        <input type="text" class="form-control" id="{{key}}-{{param_key}}" name="{{param_key}}" value="{{ param_config['default'] }}">
+                                                    {% elif param_config['type'] == 'number' %}
+                                                        <input type="number" class="form-control" id="{{key}}-{{param_key}}" name="{{param_key}}" value="{{ param_config['default'] }}">
+                                                    {% elif param_config['type'] == 'select' %}
+                                                        <select class="form-control" id="{{key}}-{{param_key}}" name="{{param_key}}">
+                                                            {% for option in param_config['options'] %}
+                                                                <option value="{{option}}" {% if option == param_config['default'] %}selected{% endif %}>{{option}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    {% elif param_config['type'] == 'checkbox' %}
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" id="{{key}}-{{param_key}}" name="{{param_key}}" {% if param_config['default'] %}checked{% endif %}>
+                                                            <label class="form-check-label" for="{{key}}-{{param_key}}">
+                                                                Enable {{ param_config['label'] }}
+                                                            </label>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                                {% endfor %}
+                                                <div class="col-12">
+                                                    <button type="button" class="btn btn-info btn-sm" onclick="saveConfig('{{key}}')">
+                                                        <i class="fas fa-save"></i> Save Configuration
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        
+                                        <!-- Tool Controls -->
+                                        <div class="mb-3">
+                                            <h6><i class="fas fa-play-circle"></i> Tool Controls</h6>
+                                            <button id="start-{{key}}" class="btn btn-success btn-sm me-2"><i class="fas fa-play"></i> Start</button>
+                                            <button id="stop-{{key}}" class="btn btn-danger btn-sm me-2"><i class="fas fa-stop"></i> Stop</button>
+                                            <span id="status-{{key}}" class="badge bg-secondary">Stopped</span>
+                                            <small id="config-status-{{key}}" class="text-muted ms-2"></small>
+                                        </div>
+                                        
+                                        <!-- Advanced Metrics -->
+                                        <div class="mb-3">
+                                            <h6><i class="fas fa-chart-line"></i> Advanced Metrics</h6>
+                                            <div class="row text-center">
+                                                {% for metric, value in tool['metrics'].items() %}
+                                                <div class="col-md-4 col-sm-6 mb-2">
+                                                    <div class="metric-card p-2 border rounded">
+                                                        <span id="metric-{{key}}-{{metric}}" class="metric-value">{{ value }}</span><br>
+                                                        <small class="metric-label">{{ metric.replace('_',' ').title() }}</small>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Live Log -->
+                                        <div>
+                                            <h6><i class="fas fa-terminal"></i> Live Log 
+                                                <button class="btn btn-sm btn-outline-info" onclick="refreshLogs('{{key}}')">
+                                                    <i class="fas fa-sync-alt"></i> Refresh
+                                                </button>
+                                            </h6>
+                                            <pre id="log-{{key}}" style="background:#222;color:#0f0;height:200px;overflow-y:scroll;padding:8px;border-radius:6px;"></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Overview -->
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h6>CPU Usage</h6>
+                        <div class="metric-value" id="cpuPercent">0%</div>
+                        <small class="text-muted" id="cpuDetail">System Load</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h6>Memory Usage</h6>
+                        <div class="metric-value" id="memoryPercent">0%</div>
+                        <small class="text-muted" id="memoryDetail">Available</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h6>Disk Usage</h6>
+                        <div class="metric-value" id="diskPercent">0%</div>
+                        <small class="text-muted" id="diskDetail">Free Space</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h6>Network Connections</h6>
+                        <div class="metric-value" id="networkConnections">0</div>
+                        <small class="text-muted">Active</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Global Security Metrics -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-shield-alt"></i> Global Security Overview</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-2">
+                                <div class="alert alert-info">
+                                    <h4 id="globalAlerts">0</h4>
+                                    <small>Security Alerts</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="alert alert-warning">
+                                    <h4 id="globalThreats">0</h4>
+                                    <small>Threats Detected</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="alert alert-success">
+                                    <h4 id="globalIncidents">0</h4>
+                                    <small>Incidents Resolved</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="alert alert-danger">
+                                    <h4 id="globalVulns">0</h4>
+                                    <small>Vulnerabilities</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="alert alert-primary">
+                                    <h4 id="globalAnomalies">0</h4>
+                                    <small>Network Anomalies</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="alert alert-secondary">
+                                    <h4 id="globalBlocks">0</h4>
+                                    <small>Firewall Blocks</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+        
+        // Get all tool keys from tab panes
+        const toolKeys = Array.from(document.querySelectorAll('.tab-pane')).map(e => e.id);
+        console.log('Available tools:', toolKeys);
+        
+        // Set up button handlers and element references for each tool
+        const toolElems = {};
+        toolKeys.forEach(key => {
+            toolElems[key] = {
+                start: document.getElementById(`start-${key}`),
+                stop: document.getElementById(`stop-${key}`),
+                status: document.getElementById(`status-${key}`),
+                log: document.getElementById(`log-${key}`),
+                metrics: {}
+            };
+            
+            // Find all metric spans for this tool
+            const metricSpans = document.querySelectorAll(`[id^='metric-${key}-']`);
+            metricSpans.forEach(span => {
+                const metric = span.id.replace(`metric-${key}-`, '');
+                toolElems[key].metrics[metric] = span;
+            });
+            
+            // Set up button click handlers
+            if (toolElems[key].start) {
+                toolElems[key].start.onclick = () => startTool(key);
+            }
+            if (toolElems[key].stop) {
+                toolElems[key].stop.onclick = () => stopTool(key);
+            }
+        });
+
+        // Tool control functions
+        function startTool(tool) {
+            fetch(`/api/tool/${tool}/start`, {method: 'POST'})
+                .then(r => r.json())
+                .then(data => {
+                    console.log('Start response:', data);
+                    // Status will be updated via SocketIO
+                })
+                .catch(e => console.error('Start error:', e));
+        }
+
+        function stopTool(tool) {
+            fetch(`/api/tool/${tool}/stop`, {method: 'POST'})
+                .then(r => r.json())
+                .then(data => {
+                    console.log('Stop response:', data);
+                    // Status will be updated via SocketIO
+                })
+                .catch(e => console.error('Stop error:', e));
+        }
+
+        function updateToolStatus(tool, status, running) {
+            if (toolElems[tool] && toolElems[tool].status) {
+                const statusElem = toolElems[tool].status;
+                statusElem.className = running ? 'badge bg-success' : 'badge bg-secondary';
+                statusElem.textContent = running ? 'Running' : 'Stopped';
+                
+                // Show configuration used when starting
+                const configStatus = document.getElementById(`config-status-${tool}`);
+                if (configStatus && status && status.config_args) {
+                    const modeText = status.mode === 'simulation' ? ' (SIMULATION)' : '';
+                    configStatus.textContent = `Config: ${status.config_args.join(' ')}${modeText}`;
+                    configStatus.className = status.mode === 'simulation' ? 'text-warning ms-2' : 'text-muted ms-2';
+                }
+            }
+        }
+
+        function saveConfig(tool) {
+            const form = document.getElementById(`config-form-${tool}`);
+            const formData = new FormData(form);
+            const config = {};
+            
+            for (let [key, value] of formData.entries()) {
+                // Handle checkboxes
+                const input = form.querySelector(`[name="${key}"]`);
+                if (input.type === 'checkbox') {
+                    config[key] = input.checked;
+                } else {
+                    config[key] = value;
+                }
+            }
+            
+            // Include unchecked checkboxes as false
+            form.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                if (!formData.has(checkbox.name)) {
+                    config[checkbox.name] = false;
+                }
+            });
+            
+            fetch(`/api/tool/${tool}/config`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(config)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    const configStatus = document.getElementById(`config-status-${tool}`);
+                    if (configStatus) {
+                        configStatus.textContent = 'Configuration saved successfully!';
+                        configStatus.className = 'text-success ms-2';
+                        setTimeout(() => {
+                            configStatus.textContent = '';
+                            configStatus.className = 'text-muted ms-2';
+                        }, 3000);
+                    }
+                } else {
+                    alert('Error saving configuration: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error saving configuration');
+            });
+        }
+
+        function refreshLogs(tool) {
+            fetch(`/api/tool/${tool}/logs`)
+                .then(r => r.json())
+                .then(data => {
+                    updateToolLogs(tool, data.logs || []);
+                })
+                .catch(e => console.error('Logs error:', e));
+        }
+
+        function updateToolLogs(tool, logs) {
+            if (toolElems[tool] && toolElems[tool].log) {
+                const logContent = Array.isArray(logs) ? logs.join('') : 'No logs available';
+                toolElems[tool].log.textContent = logContent;
+                toolElems[tool].log.scrollTop = toolElems[tool].log.scrollHeight;
+            }
+        }
+
+        function updateMetrics(tool) {
+            fetch(`/api/tool/${tool}/metrics`)
+                .then(r => r.json())
+                .then(data => {
+                    const metrics = data.metrics || {};
+                    Object.keys(toolElems[tool].metrics).forEach(metric => {
+                        if (toolElems[tool].metrics[metric]) {
+                            toolElems[tool].metrics[metric].textContent = metrics[metric] || '0';
+                        }
+                    });
+                })
+                .catch(e => console.error('Metrics error:', e));
+        }
+
+        // Auto-refresh functions (fallback for non-SocketIO updates)
+        function refreshAllData() {
+            toolKeys.forEach(tool => {
+                updateMetrics(tool);
+            });
+        }
+
+        // SocketIO Real-time Event Handlers
+        socket.on('connect', function() {
+            console.log('Connected to real-time dashboard server');
+        });
+
+        socket.on('disconnect', function() {
+            console.log('Disconnected from dashboard server');
+        });
+
+        socket.on('tool_status_update', function(data) {
+            console.log('Real-time status update:', data);
+            updateToolStatus(data.tool, data, data.running);
+        });
+
+        socket.on('tool_logs_update', function(data) {
+            console.log('Real-time logs update for:', data.tool);
+            updateToolLogs(data.tool, data.logs);
+        });
+
+        socket.on('tool_metrics_update', function(data) {
+            console.log('Real-time metrics update for:', data.tool);
+            if (toolElems[data.tool]) {
+                Object.keys(data.metrics).forEach(metric => {
+                    const elem = document.getElementById(`metric-${data.tool}-${metric}`);
+                    if (elem) {
+                        // Animate value changes
+                        const oldValue = elem.textContent;
+                        const newValue = data.metrics[metric];
+                        if (oldValue !== newValue.toString()) {
+                            elem.style.transition = 'color 0.5s';
+                            elem.style.color = '#28a745';
+                            elem.textContent = newValue;
+                            setTimeout(() => {
+                                elem.style.color = '';
+                            }, 1000);
+                        }
+                    }
+                });
+            }
+        });
+
+        socket.on('global_metrics_update', function(data) {
+            console.log('Global security metrics update:', data.global_metrics);
+            const metrics = data.global_metrics;
+            
+            // Update global security overview
+            updateElementWithAnimation('globalAlerts', metrics.security_alerts);
+            updateElementWithAnimation('globalThreats', metrics.threats_detected);
+            updateElementWithAnimation('globalIncidents', metrics.incidents_resolved);
+            updateElementWithAnimation('globalVulns', metrics.vulnerabilities_found);
+            updateElementWithAnimation('globalAnomalies', metrics.network_anomalies);
+            updateElementWithAnimation('globalBlocks', metrics.firewall_blocks);
+        });
+
+        socket.on('system_stats_update', function(data) {
+            console.log('Real-time system stats update:', data);
+            updateElementWithAnimation('cpuPercent', data.cpu_percent + '%');
+            updateElementWithAnimation('memoryPercent', data.memory_percent + '%');
+            updateElementWithAnimation('diskPercent', data.disk_usage + '%');
+            updateElementWithAnimation('networkConnections', data.network_connections);
+            
+            // Update detail text if available
+            if (data.memory_available) {
+                document.getElementById('memoryDetail').textContent = `${data.memory_available} GB free`;
+            }
+            if (data.disk_free) {
+                document.getElementById('diskDetail').textContent = `${data.disk_free} GB free`;
+            }
+        });
+
+        function updateElementWithAnimation(elementId, newValue) {
+            const elem = document.getElementById(elementId);
+            if (elem && elem.textContent !== newValue.toString()) {
+                elem.style.transition = 'transform 0.3s, color 0.3s';
+                elem.style.transform = 'scale(1.1)';
+                elem.style.color = '#28a745';
+                elem.textContent = newValue;
+                setTimeout(() => {
+                    elem.style.transform = 'scale(1)';
+                    elem.style.color = '';
+                }, 500);
+            }
+        }
+
+        // Initial load and periodic refresh for metrics only
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Dashboard loaded, waiting for real-time updates...');
+            refreshAllData();
+            setInterval(refreshAllData, 10000); // Refresh metrics every 10 seconds
+        });
+    </script>
+</body>
+</html>

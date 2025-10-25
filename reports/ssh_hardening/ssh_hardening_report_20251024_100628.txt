@@ -1,0 +1,66 @@
+SSH Hardening Report - CEG25 Competition
+Generated: Pre 24 Tet 2025 10:07:32.PD CEST
+========================================
+
+COMPETITION CONTEXT:
+- Event: CyberEXPERT Game 2025 (CEG25)
+- Phase: Energy Infrastructure Defense
+- Location: Warsaw, Poland
+- Date: October 28-30, 2025
+
+SSH SECURITY ASSESSMENT:
+SSH Service Status:
+  Service: inactive
+Not managed by systemd
+  Version: OpenSSH_9.2p1 Debian-2+deb12u7, OpenSSL 3.0.17 1 Jul 2025
+  Port: 
+
+Security Settings Applied:
+  ✓ PrintMotd = no
+  ✗ Compression =  (should be: delayed)
+  ✗ PrintLastLog =  (should be: no)
+  ✗ StrictModes =  (should be: yes)
+  ✗ MaxAuthTries =  (should be: 3)
+  ✗ PermitRootLogin =  (should be: no)
+  ✗ GSSAPIAuthentication =  (should be: no)
+  ✗ PermitEmptyPasswords =  (should be: no)
+  ✗ UseDNS =  (should be: no)
+  ✗ ClientAliveCountMax =  (should be: 2)
+  ✗ PermitUserEnvironment =  (should be: no)
+  ✗ KerberosTicketCleanup =  (should be: no)
+  ✗ IgnoreRhosts =  (should be: yes)
+  ✗ X11Forwarding = yes (should be: no)
+  ✗ HostbasedAuthentication =  (should be: no)
+  ✗ KerberosAuthentication =  (should be: no)
+  ✗ AllowTcpForwarding =  (should be: no)
+  ✗ LoginGraceTime =  (should be: 30)
+  ✗ MaxSessions =  (should be: 2)
+  ✗ PermitTunnel =  (should be: no)
+  ✓ UsePAM = yes
+  ✗ ClientAliveInterval =  (should be: 300)
+  ✗ KerberosOrLocalPasswd =  (should be: no)
+  ✗ AllowAgentForwarding =  (should be: no)
+  ✗ GSSAPICleanupCredentials =  (should be: no)
+  ✗ TCPKeepAlive =  (should be: no)
+  ✗ ChallengeResponseAuthentication =  (should be: no)
+  ✗ PasswordAuthentication =  (should be: no)
+
+Additional Security Features:
+  Key-based Authentication: ✗ Not configured
+  fail2ban Protection: ✗ Inactive
+  Rate Limiting: ✗ Inactive
+
+CEG25 Competition Compliance:
+  Root Login Disabled: ✗ Non-compliant
+  Password Auth Disabled: ✗ Non-compliant
+  Secure Ciphers: ✗ Not configured
+  Access Control: ✗ Not configured
+
+Recommendations for Competition:
+1. Distribute SSH public keys to authorized administrators
+2. Monitor SSH logs for unauthorized access attempts
+3. Regularly rotate SSH keys and update configurations
+4. Test SSH access before competition phases
+5. Document authorized SSH access for incident response
+
+Backup Location: sshd_config.backup.20251024_100628

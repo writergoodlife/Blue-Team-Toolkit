@@ -1,0 +1,35 @@
+INCIDENT REPORT - CEG25 Competition
+===================================
+
+Incident ID: INC-20251024-102420-0863
+Type: DDoS_ATTACK
+Severity: MEDIUM
+Status: PENDING
+Created: 2025-10-24 10:24:20
+
+DESCRIPTION:
+High-volume SYN flood targeting web services
+
+SOURCE INFORMATION:
+- IP Address: 192.168.23.103
+- Target System: SCADA-Server-02
+
+INDICATORS:
+Simulated attack indicators
+
+INITIAL ASSESSMENT:
+Denial of service attack. May cause service degradation or complete outage.
+
+COMPETITION IMPACT:
+MEDIUM: Response within SLA window. Moderate scoring impact. Standard procedures apply.
+
+RESPONSE TIMELINE:
+- Detection: 2025-10-24 10:24:20
+- Assessment: 2025-10-24 10:24:20
+- Response: PENDING
+- Containment: PENDING
+- Recovery: PENDING
+
+ASSIGNED TEAM: NETWORK_DEFENSE + BLUE_TEAM_LEAD
+
+PLAYBOOK: DDoS_Mitigation.yml

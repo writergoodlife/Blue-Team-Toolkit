@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Industrial Protocol Monitor Dashboard - CEG2025</title>
+    <meta http-equiv="refresh" content="30">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background-color: #1a1a1a; 
+            color: #ffffff; 
+        }
+        .header { 
+            background: linear-gradient(45deg, #2563eb, #1e40af); 
+            color: white; 
+            padding: 20px; 
+            text-align: center; 
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+        .dashboard { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 20px; 
+            margin-bottom: 20px;
+        }
+        .widget { 
+            background-color: #2d2d2d; 
+            padding: 20px; 
+            border-radius: 10px; 
+            border-left: 4px solid #3b82f6; 
+        }
+        .widget.alert { border-left-color: #ef4444; }
+        .widget.warning { border-left-color: #f59e0b; }
+        .widget.success { border-left-color: #10b981; }
+        .stat { 
+            font-size: 2em; 
+            font-weight: bold; 
+            color: #3b82f6; 
+            text-align: center; 
+        }
+        .stat.alert { color: #ef4444; }
+        .stat.warning { color: #f59e0b; }
+        .stat.success { color: #10b981; }
+        .protocol-list { 
+            background-color: #2d2d2d; 
+            padding: 15px; 
+            border-radius: 10px; 
+            margin: 10px 0; 
+        }
+        .protocol-item { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 8px 0; 
+            border-bottom: 1px solid #404040; 
+        }
+        .status-indicator { 
+            width: 12px; 
+            height: 12px; 
+            border-radius: 50%; 
+            display: inline-block; 
+            margin-right: 8px; 
+        }
+        .status-active { background-color: #10b981; }
+        .status-warning { background-color: #f59e0b; }
+        .status-critical { background-color: #ef4444; }
+        .log-output { 
+            background-color: #1a1a1a; 
+            color: #00ff00; 
+            font-family: monospace; 
+            padding: 15px; 
+            border-radius: 10px; 
+            height: 300px; 
+            overflow-y: scroll; 
+            border: 1px solid #404040; 
+        }
+        .timestamp { color: #888888; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⚡ Industrial Protocol Monitor Dashboard ⚡</h1>
+        <h2>CyberEXPERT Game 2025 - Real-Time SCADA Monitoring</h2>
+        <p>Last Updated: Pre 24 Tet 2025 09:43:16.PD CEST</p>
+    </div>
+
+    <div class="dashboard">
+        <div class="widget success">
+            <h3>📡 Active Connections</h3>
+            <div class="stat success">0
+0</div>
+            <p>Total industrial protocol connections monitored</p>
+        </div>
+
+        <div class="widget success">
+            <h3>🚨 Security Alerts</h3>
+            <div class="stat success">0
+0</div>
+            <p>Critical security events detected</p>
+        </div>
+
+        <div class="widget success">
+            <h3>🔍 Protocol Detection</h3>
+            <div class="stat success">0
+0</div>
+            <p>Industrial protocol signatures identified</p>
+        </div>
+
+        <div class="widget">
+            <h3>⚡ Energy Infrastructure Status</h3>
+            <div class="protocol-list">
+                <div class="protocol-item">
+                    <span><span class="status-indicator status-active"></span>SCADA Network</span>
+                    <span>Monitoring Active</span>
+                </div>
+                <div class="protocol-item">
+                    <span><span class="status-indicator status-active"></span>HMI Systems</span>
+                    <span>Normal Operation</span>
+                </div>
+                <div class="protocol-item">
+                    <span><span class="status-indicator status-active"></span>Control Network</span>
+                    <span>Secure</span>
+                </div>
+                <div class="protocol-item">
+                    <span><span class="status-indicator status-active"></span>Production Systems</span>
+                    <span>Secure</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="widget">
+        <h3>📊 Monitored Industrial Protocols</h3>
+        <div class="protocol-list">
+            <div class="protocol-item">
+                <span>Modbus TCP</span>
+                <span>Port 502</span>
+            </div>
+            <div class="protocol-item">
+                <span>DNP3</span>
+                <span>Port 20000</span>
+            </div>
+            <div class="protocol-item">
+                <span>IEC 61850 / Siemens S7</span>
+                <span>Port 102</span>
+            </div>
+            <div class="protocol-item">
+                <span>EtherNet/IP</span>
+                <span>Port 44818</span>
+            </div>
+            <div class="protocol-item">
+                <span>BACnet</span>
+                <span>Port 47808</span>
+            </div>
+            <div class="protocol-item">
+                <span>PROFINET</span>
+                <span>Ports 34962-34964</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="widget">
+        <h3>📜 Real-Time Log Feed</h3>
+        <div class="log-output" id="logOutput">
+            <div>[2025-10-24 09:32:42] [INFO] Real-time dashboard generated: ../reports/protocol_monitor/monitoring_dashboard_20251024_005154.html</div>
+            <div>[2025-10-24 09:38:45] [INFO] Generating real-time monitoring dashboard...</div>
+            <div>[2025-10-24 09:38:45] [INFO] Real-time dashboard generated: ../reports/protocol_monitor/monitoring_dashboard_20251024_005154.html</div>
+            <div>[2025-10-24 09:39:15] [INFO] Generating real-time monitoring dashboard...</div>
+            <div>[2025-10-24 09:39:15] [INFO] Real-time dashboard generated: ../reports/protocol_monitor/monitoring_dashboard_20251024_005154.html</div>
+            <div>[2025-10-24 09:39:45] [INFO] Generating real-time monitoring dashboard...</div>
+            <div>[2025-10-24 09:39:46] [INFO] Real-time dashboard generated: ../reports/protocol_monitor/monitoring_dashboard_20251024_005154.html</div>
+            <div>[2025-10-24 09:40:16] [INFO] Generating real-time monitoring dashboard...</div>
+            <div>[2025-10-24 09:40:16] [INFO] Real-time dashboard generated: ../reports/protocol_monitor/monitoring_dashboard_20251024_005154.html</div>
+            <div>[2025-10-24 09:40:46] [INFO] Generating real-time monitoring dashboard...</div>
+            <div>[2025-10-24 09:40:46] [INFO] Real-time dashboard generated: ../reports/protocol_monitor/monitoring_dashboard_20251024_005154.html</div>
+            <div>[2025-10-24 09:41:16] [INFO] Generating real-time monitoring dashboard...</div>
+            <div>[2025-10-24 09:41:16] [INFO] Real-time dashboard generated: ../reports/protocol_monitor/monitoring_dashboard_20251024_005154.html</div>
+            <div>[2025-10-24 09:41:46] [INFO] Generating real-time monitoring dashboard...</div>
+            <div>[2025-10-24 09:41:46] [INFO] Real-time dashboard generated: ../reports/protocol_monitor/monitoring_dashboard_20251024_005154.html</div>
+            <div>[2025-10-24 09:42:16] [INFO] Generating real-time monitoring dashboard...</div>
+            <div>[2025-10-24 09:42:16] [INFO] Real-time dashboard generated: ../reports/protocol_monitor/monitoring_dashboard_20251024_005154.html</div>
+            <div>[2025-10-24 09:42:46] [INFO] Generating real-time monitoring dashboard...</div>
+            <div>[2025-10-24 09:42:46] [INFO] Real-time dashboard generated: ../reports/protocol_monitor/monitoring_dashboard_20251024_005154.html</div>
+            <div>[2025-10-24 09:43:16] [INFO] Generating real-time monitoring dashboard...</div>
+        </div>
+    </div>
+
+    <div class="header" style="margin-top: 30px;">
+        <p>Industrial Protocol Monitor v1.0 - Designed for CEG2025 Energy Infrastructure</p>
+        <p>🛡️ Protecting Critical Infrastructure Through Real-Time Protocol Monitoring</p>
+    </div>
+
+    <script>
+        // Auto-scroll log output to bottom
+        const logOutput = document.getElementById('logOutput');
+        logOutput.scrollTop = logOutput.scrollHeight;
+    </script>
+</body>
+</html>
