@@ -1,25 +1,25 @@
-# 🏆 CEG25 Blue Team Toolkit v2.0 - Energy Infrastructure Defense Suite
+# 🏆 Blue Team Toolkit v2.0 - Energy Infrastructure Defense Suite
 
-A comprehensive security automation platform specifically designed for **CyberEXPERT Game 2025** energy infrastructure defense. This toolkit provides automated vulnerability detection, real-time monitoring, and intelligent hardening for critical energy systems including SCADA, ICS, and power grid infrastructure.
+A comprehensive security automation platform for energy infrastructure defense. This toolkit provides automated vulnerability detection, real-time monitoring, and intelligent hardening for critical energy systems including SCADA, ICS, and power grid infrastructure.
 
 ## 🎯 Project Status
 
 **Platform Support:**
-- ✅ **Linux** - Production Ready (12+ scan modules, 8+ hardening modules, 5 CEG25 modules)
+- ✅ **Linux** - Production Ready (12+ scan modules, 8+ hardening modules, 5 competition modules)
 - 🔄 **Windows** - Placeholder (PowerShell framework ready)
 
 **Current Version:** v2.0 - Energy Infrastructure Defense Suite  
-**Competition Ready:** ✅ CyberEXPERT Game 2025 (October 28-30, Warsaw)  
-**Last Updated:** October 25, 2025
+**Competition Ready:** ✅ Cybersecurity competitions and training  
+**Last Updated:** Latest version
 
-## 🚀 **NEW in v2.0 - CEG25 Competition Features**
+## 🚀 **NEW in v2.0 - Competition Features**
 
-### 🏭 **Energy Infrastructure Security (CEG25 Specialized)**
+### 🏭 **Energy Infrastructure Security (Specialized)**
 1. **SCADA/ICS Security Scanner** - 8+ industrial protocols (Modbus, DNP3, IEC 61850, S7)
 2. **Multi-Subnet Network Scanner** - 70-80 VM energy infrastructure coverage
 3. **Industrial Protocol Monitor** - Real-time SCADA protocol monitoring with anomaly detection
 4. **Energy Vulnerability Scanner** - HMI, SCADA, PLC specialized scanning with 50+ default credentials
-5. **CEG25 Competition Automation** - Competition orchestration system with scoring optimization
+5. **Competition Automation** - Competition orchestration system with scoring optimization
 
 ### 🛡️ **Advanced Hardening Suite**
 6. **SSH Hardening** - Automated SSH security configuration
@@ -29,7 +29,7 @@ A comprehensive security automation platform specifically designed for **CyberEX
 ### 📊 **Real-Time Dashboards & Monitoring**
 - **Minimal Dashboard** - Lightweight competition monitoring
 - **Web Dashboard** - Full-featured real-time interface  
-- **Competition Dashboard** - CEG25 scoring optimization display
+- **Competition Dashboard** - Competition scoring optimization display
 
 ### 🚨 **Incident Response & Automation**
 - **Incident Response Playbooks** - Automated threat response
@@ -72,7 +72,7 @@ A comprehensive security automation platform specifically designed for **CyberEX
 ### 📊 **Professional Reporting & Analytics**
 
 - **Comprehensive Reports** - Professional security reports with actionable recommendations
-- **Competition Scorecards** - CEG25 scoring optimization dashboards
+- **Competition Scorecards** - Competition scoring optimization dashboards
 - **Real-Time Dashboards** - Web-based monitoring interfaces
 - **Detailed Logging** - Full audit trail of all actions
 - **Threat Intelligence** - Energy sector threat analysis
@@ -86,22 +86,37 @@ A comprehensive security automation platform specifically designed for **CyberEX
 
 ## 🚀 Quick Start
 
-### **For CyberEXPERT Game 2025 Competition:**
+### **For cybersecurity competitions:**
 ```bash
 # Navigate to the toolkit
 cd blue-team-toolkit
 
-# 🏆 CEG25 Competition Mode (RECOMMENDED)
-sudo ./linux/ceg25_competition.sh compete day1_morning
+# 🏆 Competition Mode (RECOMMENDED)
+sudo ./linux/competition.sh compete morning
+```
+
+```bash
+# 🎯 Launch Competition Dashboard
+./linux/competition.sh dashboard
+```
+
+```bash
+# 🔍 Quick Assessment
+sudo ./linux/competition.sh assess
+```
+
+```bash
+# 🛡️ Emergency Hardening
+sudo ./linux/competition.sh harden
 
 # 📊 Real-time Competition Dashboard
-./linux/ceg25_competition.sh dashboard
+./linux/competition.sh dashboard
 
 # ⚡ Rapid Assessment (10 minutes)
-sudo ./linux/ceg25_competition.sh assess
+sudo ./linux/competition.sh assess
 
 # 🛡️ Priority Hardening
-sudo ./linux/ceg25_competition.sh harden
+sudo ./linux/competition.sh harden
 ```
 
 ### **Standard Blue Team Operations:**
@@ -140,7 +155,7 @@ sudo ./linux/multi_subnet_scanner.sh discover
 ## 📋 Detailed Usage
 
 See [USAGE.md](USAGE.md) for comprehensive documentation.  
-See [CEG25_COMPLETION_SUMMARY.md](CEG25_COMPLETION_SUMMARY.md) for competition features.  
+See [COMPLETION_SUMMARY.md](COMPLETION_SUMMARY.md) for competition features.  
 See [QUICK_REFERENCE.md](QUICK_REFERENCE.md) for competition day cheat sheet.
 
 ### **Core Blue Team Commands**
@@ -154,16 +169,16 @@ sudo ./linux/blue_agent.sh monitor stop            # Stop monitoring
 sudo ./linux/blue_agent.sh report                  # Generate security report
 ```
 
-### **CEG25 Competition Commands**
+### **Competition Commands**
 ```bash
 # Competition phases
-sudo ./linux/ceg25_competition.sh init day1_morning     # Initialize for phase
-sudo ./linux/ceg25_competition.sh compete day1_morning  # Full automation
-sudo ./linux/ceg25_competition.sh assess               # Rapid vulnerability assessment
-sudo ./linux/ceg25_competition.sh harden               # Priority hardening
-sudo ./linux/ceg25_competition.sh monitor              # Real-time monitoring
-sudo ./linux/ceg25_competition.sh dashboard            # Competition dashboard
-sudo ./linux/ceg25_competition.sh scorecard current    # Current scoring status
+sudo ./linux/competition.sh init morning     # Initialize for phase
+sudo ./linux/competition.sh compete morning  # Full automation
+sudo ./linux/competition.sh assess           # Rapid vulnerability assessment
+sudo ./linux/competition.sh harden           # Priority hardening
+sudo ./linux/competition.sh monitor          # Real-time monitoring
+sudo ./linux/competition.sh dashboard        # Competition dashboard
+sudo ./linux/competition.sh scorecard current # Current scoring status
 ```
 
 ### **Energy Infrastructure Commands**
@@ -198,7 +213,7 @@ sudo ./linux/automated_service_restoration.sh monitor # Service protection
 blue-team-toolkit/
 ├── linux/                      # Linux security modules
 │   ├── blue_agent.sh           # Core Blue Team agent (original 8 modules)
-│   ├── ceg25_competition.sh     # 🏆 CEG25 competition automation
+│   ├── competition.sh           # 🏆 Competition automation
 │   ├── scada_ics_security.sh    # 🏭 SCADA/ICS security scanner
 │   ├── industrial_protocol_monitor.sh # 📡 Industrial protocol monitoring
 │   ├── energy_vulnerability_scanner.sh # ⚡ Energy infrastructure scanner
@@ -213,7 +228,7 @@ blue-team-toolkit/
 │   ├── suid_baseline.conf       # SUID/SGID baselines
 │   ├── user_baseline.conf       # User account baselines
 │   ├── weak_passwords.txt       # Password testing wordlist
-│   ├── ceg25/                   # CEG25 competition configs
+│   ├── competition/             # Competition configs
 │   ├── energy_vulns/            # Energy vulnerability configs
 │   ├── protocol_monitor/        # Protocol monitoring configs
 │   ├── firewall_hardening/      # Firewall backup configs
@@ -226,7 +241,7 @@ blue-team-toolkit/
 │   ├── incident_response/       # Incident response logs
 │   └── monitor/                 # Real-time monitoring baselines
 ├── reports/                    # Generated reports
-│   ├── ceg25/                   # Competition reports
+│   ├── competition/             # Competition reports
 │   ├── energy_vulns/            # Energy vulnerability reports
 │   ├── scada/                   # SCADA/ICS reports
 │   ├── protocol_monitor/        # Protocol monitoring reports
@@ -248,7 +263,7 @@ blue-team-toolkit/
 │   ├── README.md               # This file (updated v2.0)
 │   ├── USAGE.md                # Detailed usage guide
 │   ├── QUICK_REFERENCE.md      # Competition cheat sheet
-│   ├── CEG25_COMPLETION_SUMMARY.md # Competition features summary
+│   ├── COMPLETION_SUMMARY.md    # Competition features summary
 │   ├── TESTING_COMPLETE.md     # Testing validation results
 │   ├── MONITOR_GUIDE.md        # Real-time monitoring guide
 │   ├── MCP_INTEGRATION.md      # AI agent integration
@@ -289,7 +304,7 @@ pip3 install flask flask-socketio eventlet
 sudo apt install john-data
 ```
 
-### **CEG25 Energy Infrastructure Dependencies**
+### **Energy Infrastructure Dependencies**
 ```bash
 # Industrial protocol analysis
 sudo apt install -y \
@@ -333,12 +348,12 @@ sudo ./linux/blue_agent.sh scan
 pip3 install mcp-server-hexstrike
 ```
 
-## 🎮 **CyberEXPERT Game 2025 Competition Workflow**
+## 🎮 **Cybersecurity Competition Workflow**
 
-### **🏁 Pre-Competition Setup (Day 0)**
+### **🏁 Pre-Competition Setup**
 ```bash
 # Initialize competition environment
-sudo ./linux/ceg25_competition.sh init day0
+sudo ./linux/competition.sh init
 
 # Create fresh baselines on competition systems
 sudo ./linux/blue_agent.sh scan
@@ -353,13 +368,13 @@ cat QUICK_REFERENCE.md > competition_cheatsheet.txt
 ### **⚡ Competition Day 1 Morning (Game Start)**
 ```bash
 # Launch full competition automation
-sudo ./linux/ceg25_competition.sh compete day1_morning
+sudo ./linux/competition.sh compete morning
 
 # Monitor in real-time
-./linux/ceg25_competition.sh dashboard &
+./linux/competition.sh dashboard &
 
 # Quick status check
-./linux/ceg25_competition.sh scorecard current
+./linux/competition.sh scorecard current
 ```
 
 ### **🛡️ Active Defense Phase (Day 1 Afternoon - Day 2)**
@@ -368,10 +383,10 @@ sudo ./linux/ceg25_competition.sh compete day1_morning
 sudo ./linux/blue_agent.sh monitor &
 
 # Rapid threat assessment (if under attack)
-sudo ./linux/ceg25_competition.sh assess
+sudo ./linux/competition.sh assess
 
 # Emergency hardening
-sudo ./linux/ceg25_competition.sh harden
+sudo ./linux/competition.sh harden
 
 # Generate incident reports
 sudo ./linux/blue_agent.sh report
@@ -379,12 +394,12 @@ sudo ./linux/blue_agent.sh report
 
 ### **📊 Competition Phases Supported**
 - **day0**: Introduction & Warmup (administrative setup)
-- **day1_morning**: Main Event Start (aggressive defense before attacks)
+- **morning**: Main Event Start (aggressive defense before attacks)
 - **day1_afternoon**: Active Defense (Red Team attacks begin)
 - **day2**: Last Push (continuous attacks, incident response)
 - **day3**: Summary & Awards (competition wrap-up)
 
-### **🏆 Scoring Optimization (CEG25 Rules)**
+### **🏆 Scoring Optimization**
 - **Service Availability (40%)** ← Automated monitoring
 - **Vulnerability Removal (35%)** ← Rapid scanning & hardening
 - **Incident Response (15%)** ← Real-time detection & response
@@ -439,7 +454,7 @@ System: Linux 6.12.32-amd64
 
 ### **✅ COMPLETED - Production Ready**
 - [x] **Linux Agent Core Framework** (8 scan modules, 8 hardening modules)
-- [x] **CEG25 Competition Automation** (5 specialized modules)
+- [x] **Competition Automation** (5 specialized modules)
 - [x] **Energy Infrastructure Security** (SCADA, ICS, industrial protocols)
 - [x] **Real-Time Monitoring** (file integrity, process, network, protocols)
 - [x] **Advanced Hardening Suite** (SSH, firewall, Docker automation)
@@ -456,7 +471,7 @@ System: Linux 6.12.32-amd64
 - [x] **Multi-Subnet Scanning** (70-80 VM infrastructure coverage)
 - [x] **Industrial Protocol Monitoring** (Modbus, DNP3, IEC 61850, S7, etc.)
 - [x] **Competition Phase Management** (day0-day3 automation)
-- [x] **Scoring Optimization** (CEG25 rules compliance)
+- [x] **Scoring Optimization** (Competition rules compliance)
 
 ### **📅 FUTURE ROADMAP**
 - [ ] **Windows Agent Complete Implementation** (PowerShell equivalent)
@@ -466,15 +481,15 @@ System: Linux 6.12.32-amd64
 - [ ] **Blockchain Security Analysis** (smart contracts, DeFi)
 
 ### **🏆 Competition Readiness: APPROVED ✅**
-**Status**: Production Ready for CyberEXPERT Game 2025  
+**Status**: Production Ready for cybersecurity competitions  
 **Confidence Level**: Maximum (100% test coverage)  
 **Last Validation**: October 25, 2025
 
 ## 💡 **Competition Tips & Best Practices**
 
-### **🏆 CEG25 Success Strategies**
+### **🏆 Competition Success Strategies**
 1. **Establish Baselines First** - Run full scan before competition starts
-2. **Use Competition Mode** - `./linux/ceg25_competition.sh compete day1_morning`
+2. **Use Competition Mode** - `./linux/competition.sh compete morning`
 3. **Monitor Continuously** - Real-time dashboard prevents surprises
 4. **Prioritize Critical Issues** - Items marked 🚨 = immediate action required
 5. **Document Everything** - Reports are crucial for scoring
@@ -490,16 +505,16 @@ System: Linux 6.12.32-amd64
 ### **🛡️ Blue Team Advantages**
 - **150+ Red Team Tools** (HexStrike AI MCP integration)
 - **Energy Infrastructure Expertise** (SCADA/ICS specialization)
-- **Competition Automation** (CEG25 optimized workflows)
+- **Competition Automation** (Optimized workflows)
 - **AI-Enhanced Operations** (Claude Sonnet integration)
 - **Zero False Positives** (intelligent baseline filtering)
 
 ### **🚨 Emergency Response Commands**
 ```bash
 # System under attack - rapid response
-sudo ./linux/ceg25_competition.sh assess    # 5-minute assessment
-sudo ./linux/ceg25_competition.sh harden    # Emergency hardening
-./linux/ceg25_competition.sh scorecard      # Check scoring impact
+sudo ./linux/competition.sh assess    # 5-minute assessment
+sudo ./linux/competition.sh harden    # Emergency hardening
+./linux/competition.sh scorecard      # Check scoring impact
 
 # Service down - restoration
 sudo ./linux/automated_service_restoration.sh monitor
@@ -514,26 +529,20 @@ tail -f logs/blue_agent.log | grep "ALERT"
 - [ ] Print `QUICK_REFERENCE.md` (physical backup)
 - [ ] Test all modules on competition systems
 - [ ] Create fresh baselines (`sudo ./linux/blue_agent.sh scan`)
-- [ ] Launch competition automation (`./linux/ceg25_competition.sh compete`)
-- [ ] Monitor dashboard in background (`./linux/ceg25_competition.sh dashboard`)
+- [ ] Launch competition automation (`./linux/competition.sh compete`)
+- [ ] Monitor dashboard in background (`./linux/competition.sh dashboard`)
 - [ ] USB backup of toolkit ready
 - [ ] Emergency response commands memorized
 
 ---
 
-## 🏆 **Ready for CyberEXPERT Game 2025!**
-
-**Competition Details:**
-- 📅 **Date**: October 28-30, 2025
-- 📍 **Location**: Warsaw, Poland  
-- 🎯 **Target**: Energy Infrastructure (70-80 VMs)
-- 🛡️ **Mission**: Defend critical SCADA/ICS systems
+## 🏆 **Ready for Cybersecurity Competitions!**
 
 **Toolkit Status**: ✅ **PRODUCTION READY**
 
 ### **🚀 Final Validation Results**
 - ✅ **Detection Accuracy**: 100% (8/8 core tests passed)
-- ✅ **CEG25 Features**: 5/5 energy modules complete
+- ✅ **Competition Features**: 5/5 energy modules complete
 - ✅ **Hardening Success**: 8/8 automation modules functional
 - ✅ **Performance**: <30 second scans, real-time monitoring
 - ✅ **Documentation**: 5 comprehensive guides
@@ -549,7 +558,7 @@ tail -f logs/blue_agent.log | grep "ALERT"
 
 ### **🤝 Contributing**
 
-This toolkit is specifically designed for CyberEXPERT Game 2025. Contributions welcome:
+This toolkit is designed for cybersecurity competitions and training. Contributions welcome:
 - 🆕 Additional scan modules
 - 🛠️ New hardening automations  
 - 📊 Enhanced reporting features
@@ -558,11 +567,11 @@ This toolkit is specifically designed for CyberEXPERT Game 2025. Contributions w
 
 ### **📝 License & Credits**
 
-Created for **CyberEXPERT Game 2025** preparation by the Blue Team community.  
+Created for cybersecurity competition preparation by the Blue Team community.  
 **License**: Open Source - feel free to adapt for your competitions!
 
 **Special Thanks**: 
-- CyberEXPERT Game organizers
+- Cybersecurity competition organizers
 - Energy infrastructure security community
 - Open source security tool developers
 
@@ -570,4 +579,4 @@ Created for **CyberEXPERT Game 2025** preparation by the Blue Team community.
 
 **⚠️ IMPORTANT DISCLAIMER:** This toolkit is designed for authorized security testing and competition environments only. Always verify findings and test hardening actions in safe environments before applying to production systems. The tool assists but does not replace human cybersecurity expertise and decision-making.
 
-**🏆 Good luck defending critical energy infrastructure at CyberEXPERT Game 2025!** 🛡️⚡🚀
+**🏆 Good luck defending critical energy infrastructure in cybersecurity competitions!** 🛡️⚡🚀
